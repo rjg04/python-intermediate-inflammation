@@ -1,0 +1,29 @@
+name: CI 
+
+on: push
+
+jobs: 
+  
+  build: 
+
+    runs-on: windows
+
+    steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@v5
+
+    - name: Set up Python 3.14.7
+      uses: actions/setup-python@v6
+      with: 
+        python-version: "3.14.7"
+    
+    - name: Install Python dependencies
+      run: | 
+        python -m pip install --upgrade pip
+        python -m pip install -r requirements.txt . 
+
+    - name: Test with PyTest
+      run: | 
+        python -m pytest --cov=inflammation.models tests/test_models.py
+
