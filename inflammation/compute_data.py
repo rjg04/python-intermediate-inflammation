@@ -12,12 +12,22 @@ class CSVDataSource:
         self.data_dir = data_dir # where to look for CSV files
 
     def load_inflammation_data(self):
-        self.data_file_paths = glob.glob(os.path.join(self.data_dir, 'inflammation*.csv'))
-        if len(self.data_file_paths) == 0:
+        data_file_paths = glob.glob(os.path.join(self.data_dir, 'inflammation*.csv'))
+        if len(data_file_paths) == 0:
             raise ValueError(f"No inflammation data CSV files found in path {self.data_dir}")
-        self.data = map(models.load_csv, self.data_file_paths) # load in all CSVs found in the given directory
-        return list(self.data)  # returns a list where each entry is a 2D numpy array of the data from one CSV file. 
+        data = map(models.load_csv, self.data_file_paths) # load in all CSVs found in the given directory
+        return list(data)  # returns a list where each entry is a 2D numpy array of the data from one CSV file. 
 
+class JSONDataSource:
+    def __init__(self, data_dir):
+            self.data_dir = data_dir # where to look for CSV files
+    
+    def load_inflammation_data(self):
+        data_file_paths = glob.glob(os.path.join(self.data_dir, 'inflammation*.json'))
+        if len(data_file_paths) == 0:
+            raise ValueError(f"No inflammation data JSON files found in path {self.data_dir}")
+        data = map(models.load_json, self.data_file_paths) # load in all CSVs found in the given directory
+        return list(data)  # returns a list where each entry is a 2D numpy array of the data from one CSV file. 
 
 def analyse_data(data_source):
     """Calculates the standard deviation by day between datasets.
