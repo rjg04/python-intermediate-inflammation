@@ -5,22 +5,17 @@ jobs:
   
   build: 
 
-    strategy:
-      matrix:
-        os: ["windows-latest"]
-        python-version: ["3.12", "3.13", "3.14.7"]
-
-    runs-on: ${{ matrix.os }}
+    runs-on: "windows-latest"
 
     steps:
 
     - name: Checkout repository
       uses: actions/checkout@v5
 
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python 3.14.7
       uses: actions/setup-python@v6
       with: 
-        python-version: ${{ matrix.python-version }}
+        python-version: "3.14.7"
     
     - name: Install Python dependencies
       run: | 
@@ -30,4 +25,8 @@ jobs:
     - name: Test with PyTest
       run: | 
         python3 -m pytest --cov=inflammation.models tests/test_models.py
+
+    - name: Check style with Pylint
+      run: |
+        python3 -m pylint --fail-under-0 --reports=y inflammation
 
